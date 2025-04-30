@@ -1,0 +1,24 @@
+import { Database, Resource } from '@adminjs/sequelize';
+import AdminJS from 'adminjs';
+import {sequelize} from './models/association.js'
+
+AdminJS.registerAdapter({
+  Database,
+  Resource,
+});
+
+const initialize = async () => {
+  try {
+    sequelize.sync();
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+
+    return { sequelize };
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+
+    return {};
+  }
+};
+
+export default initialize;

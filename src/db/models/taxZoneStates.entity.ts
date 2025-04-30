@@ -1,0 +1,38 @@
+import { DataTypes, Model, Optional } from 'sequelize';
+import sequelize from '../config.js';
+
+interface ITaxZoneState {
+  id: number;
+  tax_zone_id: number;
+  state_id: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type TaxZoneStateCreationAttributes = Optional<ITaxZoneState, 'id'>;
+
+export class TaxZoneState extends Model<ITaxZoneState, TaxZoneStateCreationAttributes> {
+  declare id: number;
+  declare tax_zone_id: number;
+  declare state_id: number;
+  declare createdAt: Date;
+  declare updatedAt: Date;
+}
+
+TaxZoneState.init(
+  {
+    id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
+    tax_zone_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_tax_zones', key: 'id' } },
+    state_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_states', key: 'id' } },
+    createdAt: { type: DataTypes.DATE, allowNull: true },
+    updatedAt: { type: DataTypes.DATE, allowNull: true },
+  },
+  {
+    sequelize,
+    tableName: 'lunar_tax_zone_states',
+    modelName: 'TaxZoneState',
+    timestamps: true,
+    underscored: false,
+  }
+);
+export default TaxZoneState;
