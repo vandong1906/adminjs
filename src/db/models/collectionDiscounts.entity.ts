@@ -24,8 +24,8 @@ export class CollectionDiscount extends Model<ICollectionDiscount, CollectionDis
 CollectionDiscount.init(
   {
     id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
-    discount_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_discounts', key: 'id' } },
-    collection_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_collections', key: 'id' } },
+    discount_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: true},
+    collection_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: true},
     type: { type: DataTypes.STRING(20), allowNull: false, defaultValue: 'limitation' },
     createdAt: { type: DataTypes.DATE, allowNull: true },
     updatedAt: { type: DataTypes.DATE, allowNull: true },

@@ -24,8 +24,8 @@ export class CustomerGroupDiscount extends Model<ICustomerGroupDiscount, Custome
 CustomerGroupDiscount.init(
   {
     id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
-    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_customer_groups', key: 'id' } },
-    discount_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_discounts', key: 'id' } },
+    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false},
+    discount_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false },
     type: { type: DataTypes.STRING(20), allowNull: false, defaultValue: 'limitation' },
     createdAt: { type: DataTypes.DATE, allowNull: true },
     updatedAt: { type: DataTypes.DATE, allowNull: true },

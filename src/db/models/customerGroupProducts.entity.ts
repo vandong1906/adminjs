@@ -28,8 +28,8 @@ export class CustomerGroupProduct extends Model<ICustomerGroupProduct, CustomerG
 CustomerGroupProduct.init(
   {
     id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
-    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_customer_groups', key: 'id' } },
-    product_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_products', key: 'id' } },
+    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false},
+    product_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false},
     enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     starts_at: { type: DataTypes.DATE, allowNull: true },
     ends_at: { type: DataTypes.DATE, allowNull: true },

@@ -22,8 +22,8 @@ export class TaxZoneCustomerGroup extends Model<ITaxZoneCustomerGroup, TaxZoneCu
 TaxZoneCustomerGroup.init(
   {
     id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
-    tax_zone_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_tax_zones', key: 'id' } },
-    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_customer_groups', key: 'id' } },
+    tax_zone_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false },
+    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false},
     createdAt: { type: DataTypes.DATE, allowNull: true },
     updatedAt: { type: DataTypes.DATE, allowNull: true },
   },

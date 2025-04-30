@@ -30,8 +30,8 @@ export class CollectionCustomerGroup extends Model<ICollectionCustomerGroup, Col
 CollectionCustomerGroup.init(
   {
     id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
-    collection_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_collections', key: 'id' } },
-    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_customer_groups', key: 'id' } },
+    collection_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: true},
+    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: true},
     enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     starts_at: { type: DataTypes.DATE, allowNull: true },
     ends_at: { type: DataTypes.DATE, allowNull: true },

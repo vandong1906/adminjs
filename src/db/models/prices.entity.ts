@@ -34,8 +34,8 @@ export class Price extends Model<IPrice, PriceCreationAttributes> {
 Price.init(
   {
     id: { type: DataTypes.BIGINT.UNSIGNED, autoIncrement: true, primaryKey: true },
-    currency_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, references: { model: 'lunar_currencies', key: 'id' } },
-    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: true, references: { model: 'lunar_customer_groups', key: 'id' } },
+    currency_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false},
+    customer_group_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: true },
     priceable_type: { type: DataTypes.STRING(255), allowNull: false },
     priceable_id: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false },
     price: { type: DataTypes.INTEGER, allowNull: false },
