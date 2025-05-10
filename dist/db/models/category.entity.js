@@ -23,3 +23,4 @@ Category.init({
     tableName: 'categories',
     modelName: 'category',
 });
+export default Category;
