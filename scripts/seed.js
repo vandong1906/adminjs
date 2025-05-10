@@ -12,8 +12,10 @@ import createSampleProductVariants from './sample-data/product-variants.js';
 import createSampleDiscounts from './sample-data/discounts.js';
 import createSampleCarts from './sample-data/carts.js';
 import createSampleOrders from './sample-data/orders.js';
-// Import other sample data creators as needed
+import createSampleOrderLines from './sample-data/order-lines.js';
 
+// Import other sample data creators as needed
+import createSampleCountries from './sample-data/countries.js';
 const seedDatabase = async () => {
   try {
     console.log('Initializing database connection...');
@@ -31,8 +33,9 @@ const seedDatabase = async () => {
     await createSampleProductVariants();
     await createSampleDiscounts();
     await createSampleCarts();
-    await createSampleOrders();
-    
+    // await createSampleOrders();
+    await createSampleCountries(); 
+    // await createSampleOrderLines();
     console.log('Database seeding completed successfully!');
     process.exit(0);
   } catch (error) {

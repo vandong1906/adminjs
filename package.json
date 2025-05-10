@@ -7,7 +7,7 @@
     "lint": "eslint \"src\"",
     "start": "dotenv -c '.env' -- node dist/app",
     "dev": "nodemon --exec node --import ./register-ts-node.js src/app.ts",
-    "seed": "node --import ./register-ts-node.js scripts/seed.js"
+    "seed": "node --import ./register-ts-node.js src/app.ts"
   },
   "dependencies": {
     "@adminjs/express": "^6.1.0",

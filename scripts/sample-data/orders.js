@@ -61,8 +61,8 @@ const createSampleOrders = async () => {
         sub_total: 0, // Will calculate after adding order lines
         discount_total: 0,
         shipping_total: Math.random() > 0.3 ? 9.99 : 0,
-        tax_total: 0, // Will calculate after adding order lines
-        total: 0, // Will calculate
+        tax_total: 0, 
+        total: 0, 
         notes: Math.random() > 0.7 ? 'Please deliver during business hours.' : null,
         currency_code: 'USD',
         compare_currency_code: '',
