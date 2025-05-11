@@ -33,3 +33,5 @@ import TaxClassForm from '../src/admin/components/tax-class-form'
 AdminJS.UserComponents.TaxClassForm = TaxClassForm
 import TaxZoneForm from '../src/admin/components/tax-zone-form'
 AdminJS.UserComponents.TaxZoneForm = TaxZoneForm
+import AttributeGroupForm from '../src/admin/components/attribute-group-form'
+AdminJS.UserComponents.AttributeGroupForm = AttributeGroupForm

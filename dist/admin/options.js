@@ -1,6 +1,8 @@
 import componentLoader from './component-loader.js';
 import { models } from '../db/models/association.js';
 import { setupAttributeDataHandling } from './field-types/index.js';
+import { AttributeGroupHandler } from './handlers/attribute-group.handler.js';
+import { AttributeHandler } from './handlers/attribute.handler.js';
 setupAttributeDataHandling();
 const importantModels = [
     'Product',
@@ -12,7 +14,9 @@ const importantModels = [
     'Cart',
     'User',
     'Channel',
-    'Currency'
+    'Currency',
+    'AttributeGroup',
+    'Attribute'
 ];
 const resources = Object.values(models)
     .filter(model => {
@@ -413,6 +417,188 @@ const resources = Object.values(models)
                     'starts_at',
                     'ends_at',
                 ],
+            },
+        };
+    }
+    if (model.name === 'AttributeGroup') {
+        return {
+            resource: model,
+            options: {
+                navigation: {
+                    name: 'Catalog',
+                    icon: 'Catalog',
+                },
+                properties: {
+                    name: {
+                        type: 'mixed',
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        components: {
+                            show: 'JsonViewer',
+                            edit: 'JsonEditor',
+                        }
+                    },
+                    handle: {
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isRequired: true,
+                    },
+                    position: {
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isRequired: true,
+                    },
+                    attributable_type: {
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isRequired: true,
+                        availableValues: [
+                            { value: 'product', label: 'Product' },
+                            { value: 'collection', label: 'Collection' }
+                        ]
+                    },
+                },
+                actions: {
+                    new: {
+                        handler: async (request, response, context) => {
+                            const result = await AttributeGroupHandler.createAttributeGroup(request.payload);
+                            if (result.success) {
+                                return {
+                                    record: context.record,
+                                    notice: {
+                                        message: 'Successfully created attribute group',
+                                        type: 'success',
+                                    },
+                                };
+                            }
+                            throw new Error(result.error);
+                        },
+                    },
+                    edit: {
+                        handler: async (request, response, context) => {
+                            const result = await AttributeGroupHandler.updateAttributeGroup(context.record.id, request.payload);
+                            if (result.success) {
+                                return {
+                                    record: context.record,
+                                    notice: {
+                                        message: 'Successfully updated attribute group',
+                                        type: 'success',
+                                    },
+                                };
+                            }
+                            throw new Error(result.error);
+                        },
+                    },
+                },
+                sort: {
+                    sortBy: 'position',
+                    direction: 'asc',
+                },
+                filterProperties: ['handle', 'attributable_type'],
+                listProperties: ['id', 'name', 'handle', 'position', 'attributable_type'],
+                editProperties: ['name', 'handle', 'position', 'attributable_type'],
+                showProperties: ['id', 'name', 'handle', 'position', 'attributable_type', 'createdAt', 'updatedAt'],
+            },
+        };
+    }
+    if (model.name === 'Attribute') {
+        return {
+            resource: model,
+            options: {
+                navigation: {
+                    name: 'Catalog',
+                    icon: 'Catalog',
+                },
+                properties: {
+                    name: {
+                        type: 'mixed',
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        components: {
+                            show: 'JsonViewer',
+                            edit: 'JsonEditor',
+                        }
+                    },
+                    description: {
+                        type: 'mixed',
+                        isVisible: { list: false, filter: false, show: true, edit: true },
+                        components: {
+                            show: 'JsonViewer',
+                            edit: 'JsonEditor',
+                        }
+                    },
+                    handle: {
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isRequired: true,
+                    },
+                    attribute_type: {
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isRequired: true,
+                    },
+                    type: {
+                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isRequired: true,
+                    },
+                    configuration: {
+                        type: 'mixed',
+                        isVisible: { list: false, filter: false, show: true, edit: true },
+                        components: {
+                            show: 'JsonViewer',
+                            edit: 'JsonEditor',
+                        }
+                    },
+                },
+                actions: {
+                    new: {
+                        component: 'AttributeForm',
+                        handler: async (request, response, context) => {
+                            const result = await AttributeHandler.createAttribute(request.payload);
+                            if (result.success) {
+                                return {
+                                    record: result.data,
+                                    notice: {
+                                        message: 'Successfully created attribute',
+                                        type: 'success',
+                                    },
+                                };
+                            }
+                            throw new Error(result.error);
+                        },
+                    }, edit: {
+                        component: 'AttributeForm',
+                        handler: async (request, response, context) => {
+                            const result = await AttributeHandler.updateAttribute(context.record.id, request.payload);
+                            if (result.success) {
+                                return {
+                                    record: result.data,
+                                    notice: {
+                                        message: 'Successfully updated attribute',
+                                        type: 'success',
+                                    },
+                                };
+                            }
+                            throw new Error(result.error);
+                        },
+                    },
+                    delete: {
+                        handler: async (request, response, context) => {
+                            const result = await AttributeHandler.deleteAttribute(context.record.id);
+                            if (result.success) {
+                                return {
+                                    record: context.record,
+                                    notice: {
+                                        message: 'Successfully deleted attribute',
+                                        type: 'success',
+                                    },
+                                };
+                            }
+                            throw new Error(result.error);
+                        },
+                    },
+                },
+                sort: {
+                    sortBy: 'position',
+                    direction: 'asc',
+                },
+                filterProperties: ['handle', 'attribute_type', 'type', 'required'],
+                listProperties: ['id', 'name', 'handle', 'attribute_type', 'type', 'required', 'position'],
+                editProperties: ['name', 'description', 'handle', 'attribute_type', 'type', 'position', 'section', 'required', 'default_value', 'configuration', 'system', 'filterable', 'searchable'],
+                showProperties: ['id', 'name', 'description', 'handle', 'attribute_type', 'type', 'position', 'section', 'required', 'default_value', 'configuration', 'system', 'filterable', 'searchable', 'createdAt', 'updatedAt'],
             },
         };
     }

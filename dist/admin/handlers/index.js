@@ -5,7 +5,8 @@ import { OrderHandler } from './order.handler.js';
 import { CustomerHandler } from './customer.handler.js';
 import { DiscountHandler } from './discount.handler.js';
 import { uploadProductVariantImages, getProductVariantImages, deleteProductVariantImage } from './product-variant-image-handler.js';
-export { ProductHandler, ProductVariantHandler, CollectionHandler, OrderHandler, CustomerHandler, DiscountHandler, uploadProductVariantImages, getProductVariantImages, deleteProductVariantImage, };
+import { AttributeGroupHandler } from './attribute-group.handler.js';
+export { ProductHandler, ProductVariantHandler, CollectionHandler, OrderHandler, CustomerHandler, DiscountHandler, AttributeGroupHandler, uploadProductVariantImages, getProductVariantImages, deleteProductVariantImage, };
 export default {
     ProductHandler,
     ProductVariantHandler,
@@ -13,6 +14,7 @@ export default {
     OrderHandler,
     CustomerHandler,
     DiscountHandler,
+    AttributeGroupHandler,
     ProductVariantImageHandler: {
         uploadProductVariantImages,
         getProductVariantImages,

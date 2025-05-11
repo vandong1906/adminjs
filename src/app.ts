@@ -16,7 +16,8 @@ import {
   DiscountHandler,
   uploadProductVariantImages,
   getProductVariantImages,
-  deleteProductVariantImage
+  deleteProductVariantImage,
+  AttributeGroupHandler
 } from './admin/handlers/index.js';
 
 const port = process.env.PORT || 3000;
@@ -575,6 +576,15 @@ const start = async () => {
       resave: true,
     },
   );
+router.get('/attribute-groups', async (req, res) => {
+  const result = await AttributeGroupHandler.getAttributeGroups();
+  res.json(result);
+});
+
+router.post('/attribute-groups', async (req, res) => {
+  const result = await AttributeGroupHandler.createAttributeGroup(req.body);
+  res.json(result);
+});
 
   app.use(admin.options.rootPath, router);
 

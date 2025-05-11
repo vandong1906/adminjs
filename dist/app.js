@@ -7,7 +7,7 @@ import provider from './admin/auth-provider.js';
 import options from './admin/options.js';
 import initializeDb from './db/index.js';
 import { models } from './db/models/association.js';
-import { ProductHandler, ProductVariantHandler, CollectionHandler, OrderHandler, CustomerHandler, DiscountHandler, uploadProductVariantImages, getProductVariantImages, deleteProductVariantImage } from './admin/handlers/index.js';
+import { ProductHandler, ProductVariantHandler, CollectionHandler, OrderHandler, CustomerHandler, DiscountHandler, uploadProductVariantImages, getProductVariantImages, deleteProductVariantImage, AttributeGroupHandler } from './admin/handlers/index.js';
 const port = process.env.PORT || 3000;
 const start = async () => {
     const app = express();
@@ -517,6 +517,14 @@ const start = async () => {
         secret: process.env.COOKIE_SECRET,
         saveUninitialized: true,
         resave: true,
+    });
+    router.get('/attribute-groups', async (req, res) => {
+        const result = await AttributeGroupHandler.getAttributeGroups();
+        res.json(result);
+    });
+    router.post('/attribute-groups', async (req, res) => {
+        const result = await AttributeGroupHandler.createAttributeGroup(req.body);
+        res.json(result);
     });
     app.use(admin.options.rootPath, router);
     app.listen(port, () => {

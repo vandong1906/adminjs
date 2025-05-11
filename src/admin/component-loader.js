@@ -26,5 +26,5 @@ componentLoader.add('TaxRateForm', join(componentsDir, 'tax-rate-form.tsx'));
 componentLoader.add('ProductTypeForm', join(componentsDir, 'product-type-form.tsx'));
 componentLoader.add('TaxClassForm', join(componentsDir, 'tax-class-form.tsx'));
 componentLoader.add('TaxZoneForm', join(componentsDir, 'tax-zone-form.tsx'));
-
+componentLoader.add('AttributeGroupForm', join(componentsDir, 'attribute-group-form.tsx'));
 export default componentLoader; 
