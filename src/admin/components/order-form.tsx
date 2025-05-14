@@ -79,7 +79,7 @@ const OrderForm = (props) => {
         
         try {
           const channelsResponse = await api.resourceAction({ resourceId: 'lunar_channels', actionName: 'list' });
-          setChannels(channelsResponse.data.records || []);
+        setChannels(channelsResponse.data.records || []);
         } catch (error) {
           console.warn('Error fetching channels:', error);
           setChannels([]);

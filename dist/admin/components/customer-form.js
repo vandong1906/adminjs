@@ -39,6 +39,8 @@ const CustomerForm = () => {
         };
         fetchCustomerGroups();
         fetchCustomerData();
+        console.log('Customer groups:', customerGroups);
+        console.log('Selected groups:', selectedGroups);
     }, [record.id]);
     const handleGroupsChange = (event) => {
         const { value } = event.target;

@@ -66,6 +66,8 @@ const CustomerForm: React.FC = () => {
 
     fetchCustomerGroups();
     fetchCustomerData();
+    console.log('Customer groups:', customerGroups);
+    console.log('Selected groups:', selectedGroups);
   }, [record.id]);
 
   const handleGroupsChange = (event: React.ChangeEvent<HTMLInputElement>) => {

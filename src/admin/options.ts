@@ -1,6 +1,8 @@
 import { AdminJSOptions } from 'adminjs';
-import componentLoader from './component-loader.js';
+
 import { models } from '../db/models/association.js';
+
+import componentLoader from './component-loader.js';
 import { setupAttributeDataHandling } from './field-types/index.js';
 import { AttributeGroupHandler } from './handlers/attribute-group.handler.js';
 import { AttributeHandler } from './handlers/attribute.handler.js';
@@ -21,15 +23,15 @@ const importantModels = [
   'Channel',
   'Currency',
   'AttributeGroup',
-  'Attribute'
+  'Attribute',
+  'Brand'
 ];
 
 // Configure resources with proper options
+import { ActionRequest, ActionResponse, ActionContext, After, Before } from 'adminjs';
+
 const resources = Object.values(models)
-  .filter(model => {
-    // Only include models that are defined as important
-    return importantModels.includes(model.name);
-  })
+  .filter((model) => importantModels.includes(model.name))
   .map((model) => {
     // Special configuration for Product model
     if (model.name === 'Product') {
@@ -44,8 +46,8 @@ const resources = Object.values(models)
                 show: 'AttributeEditor',
               },
             },
+            defaultValue: {},
           },
-          // Custom components for create and edit
           actions: {
             new: {
               component: 'ProductForm',
@@ -54,19 +56,17 @@ const resources = Object.values(models)
               component: 'ProductForm',
             },
           },
-          // Separate editing sections
           editProperties: [
             'product_type_id',
             'status',
             'brand_id',
-            'attribute_data',
+           
           ],
           showProperties: [
             'id',
             'product_type_id',
             'status',
             'brand_id',
-            'attribute_data',
             'createdAt',
             'updatedAt',
           ],
@@ -79,7 +79,6 @@ const resources = Object.values(models)
       return {
         resource: model,
         options: {
-          // Custom components for create and edit
           actions: {
             new: {
               component: 'ProductTypeForm',
@@ -88,7 +87,6 @@ const resources = Object.values(models)
               component: 'ProductTypeForm',
             },
           },
-          // Separate editing sections
           editProperties: [
             'name',
           ],
@@ -123,7 +121,6 @@ const resources = Object.values(models)
               },
             },
           },
-          // Custom components for create and edit
           actions: {
             new: {
               component: 'ProductVariantForm',
@@ -132,7 +129,6 @@ const resources = Object.values(models)
               component: 'ProductVariantForm',
             },
           },
-          // Separate editing sections
           editProperties: [
             'product_id',
             'tax_class_id',
@@ -193,7 +189,6 @@ const resources = Object.values(models)
               },
             },
           },
-          // Custom components for create and edit
           actions: {
             new: {
               component: 'OrderForm',
@@ -202,7 +197,6 @@ const resources = Object.values(models)
               component: 'OrderForm',
             },
           },
-          // Separate editing sections
           editProperties: [
             'customer_id',
             'channel_id',
@@ -270,7 +264,6 @@ const resources = Object.values(models)
               },
             },
           },
-          // Custom components for create and edit
           actions: {
             new: {
               component: 'CustomerForm',
@@ -279,7 +272,6 @@ const resources = Object.values(models)
               component: 'CustomerForm',
             },
           },
-          // Separate editing sections
           editProperties: [
             'title',
             'first_name',
@@ -331,7 +323,6 @@ const resources = Object.values(models)
               },
             },
           },
-          // Custom components for create and edit
           actions: {
             new: {
               component: 'CartForm',
@@ -340,7 +331,6 @@ const resources = Object.values(models)
               component: 'CartForm',
             },
           },
-          // Separate editing sections
           editProperties: [
             'user_id',
             'customer_id',
@@ -405,7 +395,6 @@ const resources = Object.values(models)
               type: 'datetime',
             },
           },
-          // Custom components for create and edit
           actions: {
             new: {
               component: 'DiscountForm',
@@ -414,7 +403,6 @@ const resources = Object.values(models)
               component: 'DiscountForm',
             },
           },
-          // Separate editing sections
           editProperties: [
             'name',
             'code',
@@ -466,34 +454,44 @@ const resources = Object.values(models)
           properties: {
             name: {
               type: 'mixed',
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               components: {
                 show: 'JsonViewer',
                 edit: 'JsonEditor',
-              }
+              },
             },
             handle: {
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               isRequired: true,
             },
             position: {
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               isRequired: true,
             },
             attributable_type: {
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               isRequired: true,
               availableValues: [
                 { value: 'product', label: 'Product' },
-                { value: 'collection', label: 'Collection' }
-              ]
+                { value: 'collection', label: 'Collection' },
+              ],
             },
           },
-          // In your AttributeGroup resource configuration
           actions: {
             new: {
-              // ...existing code...
-              handler: async (request, response, context) => {
+              handler: async (
+                request: ActionRequest,
+                _response: ActionResponse,
+                context: ActionContext
+              ) => {
                 const result = await AttributeGroupHandler.createAttributeGroup(request.payload);
                 if (result.success) {
                   return {
@@ -508,9 +506,12 @@ const resources = Object.values(models)
               },
             },
             edit: {
-              // ...existing code...
-              handler: async (request, response, context) => {
-                const result = await AttributeGroupHandler.updateAttributeGroup(context.record.id, request.payload);
+              handler: async (
+                request: ActionRequest,
+                _response: ActionResponse,
+                context: ActionContext
+              ) => {
+                const result = await AttributeGroupHandler.updateAttributeGroup(context.record.id(), request.payload);
                 if (result.success) {
                   return {
                     record: context.record,
@@ -534,7 +535,6 @@ const resources = Object.values(models)
           showProperties: ['id', 'name', 'handle', 'position', 'attributable_type', 'createdAt', 'updatedAt'],
         },
       };
-
     }
     if (model.name === 'Attribute') {
       return {
@@ -547,45 +547,62 @@ const resources = Object.values(models)
           properties: {
             name: {
               type: 'mixed',
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               components: {
                 show: 'JsonViewer',
                 edit: 'JsonEditor',
-              }
+              },
             },
             description: {
               type: 'mixed',
-              isVisible: { list: false, filter: false, show: true, edit: true },
+              isVisible: {
+                list: false, filter: false, show: true, edit: true,
+              },
               components: {
                 show: 'JsonViewer',
                 edit: 'JsonEditor',
-              }
+              },
             },
             handle: {
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               isRequired: true,
             },
             attribute_type: {
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               isRequired: true,
             },
             type: {
-              isVisible: { list: true, filter: true, show: true, edit: true },
+              isVisible: {
+                list: true, filter: true, show: true, edit: true,
+              },
               isRequired: true,
             },
             configuration: {
               type: 'mixed',
-              isVisible: { list: false, filter: false, show: true, edit: true },
+              isVisible: {
+                list: false, filter: false, show: true, edit: true,
+              },
               components: {
                 show: 'JsonViewer',
                 edit: 'JsonEditor',
-              }
+              },
             },
           },
           actions: {
             new: {
-              component: 'AttributeForm',
-              handler: async (request, response, context) => {
+              actionType: 'resource',
+              component: 'AttributeActions',
+              handler: async (
+                request: ActionRequest,
+                _response: ActionResponse,
+                context: ActionContext
+              ) => {
                 const result = await AttributeHandler.createAttribute(request.payload);
                 if (result.success) {
                   return {
@@ -598,12 +615,18 @@ const resources = Object.values(models)
                 }
                 throw new Error(result.error);
               },
-            }, edit: {
-              component: 'AttributeForm',
-              handler: async (request, response, context) => {
+            },
+            edit: {
+              actionType: 'record',
+              component: 'AttributeActions',
+              handler: async (
+                request: ActionRequest,
+                _response: ActionResponse,
+                context: ActionContext
+              ) => {
                 const result = await AttributeHandler.updateAttribute(
-                  context.record.id,
-                  request.payload
+                  context.record.id(),
+                  request.payload,
                 );
                 if (result.success) {
                   return {
@@ -618,8 +641,12 @@ const resources = Object.values(models)
               },
             },
             delete: {
-              handler: async (request, response, context) => {
-                const result = await AttributeHandler.deleteAttribute(context.record.id);
+              handler: async (
+                request: ActionRequest,
+                _response: ActionResponse,
+                context: ActionContext
+              ) => {
+                const result = await AttributeHandler.deleteAttribute(context.record.id());
                 if (result.success) {
                   return {
                     record: context.record,
@@ -644,43 +671,17 @@ const resources = Object.values(models)
         },
       };
     }
-    // Default configuration for other models
-    return {
-      resource: model,
-      options: {
-        // Default configuration
-        properties: {},
-      },
-    };
-  });
+    if (model.name === 'Brand') {
+      return {
+        resource: model,
+      };
+    }
+    return null;
+  })
+  .filter(Boolean);
 
 const options: AdminJSOptions = {
-  rootPath: '/admin',
-  loginPath: '/admin/login',
-  logoutPath: '/admin/logout',
-  dashboard: {
-    component: 'Dashboard',
-  },
   resources,
-  branding: {
-    companyName: 'Lunar E-commerce',
-    logo: false,
-  },
-  locale: {
-    language: 'en',
-    translations: {
-      labels: {
-        navigation: 'Navigation',
-      },
-      resources: {},
-      messages: {
-        successfullyCreated: 'Successfully created a new record',
-        successfullyUpdated: 'Successfully updated a record',
-        successfullyDeleted: 'Successfully deleted a record',
-      },
-    },
-  },
   componentLoader,
 };
-
 export default options;

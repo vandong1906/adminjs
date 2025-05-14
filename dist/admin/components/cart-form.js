@@ -57,14 +57,6 @@ const CartForm = (props) => {
             try {
                 setLoading(true);
                 try {
-                    const customersResponse = await api.resourceAction({ resourceId: 'lunar_customers', actionName: 'list' });
-                    setCustomers(customersResponse.data.records || []);
-                }
-                catch (error) {
-                    console.warn('Error fetching customers:', error);
-                    setCustomers([]);
-                }
-                try {
                     const usersResponse = await api.resourceAction({ resourceId: 'users', actionName: 'list' });
                     setUsers(usersResponse.data.records || []);
                 }
@@ -160,6 +152,7 @@ const CartForm = (props) => {
             React.createElement(Loader, null),
             React.createElement(Text, { mt: "default" }, "Loading...")));
     }
+    console.log('Form Data:', formData);
     return (React.createElement(Box, { as: "form", onSubmit: handleSubmit },
         React.createElement(H3, { mb: "xl" }, isEditing ? 'Edit Cart' : 'Create New Cart'),
         error && (React.createElement(MessageBox, { mb: "xl", message: error, variant: "danger" })),
@@ -171,18 +164,10 @@ const CartForm = (props) => {
                     React.createElement("option", { value: "" }, "Select User"),
                     users.map(user => (React.createElement("option", { key: user.id, value: user.id }, user.params.email))))),
             React.createElement(FormGroup, null,
-                React.createElement(Label, null, "Customer"),
-                React.createElement(StatusSelect, { name: "customer_id", value: formData.customer_id, onChange: handleInputChange },
-                    React.createElement("option", { value: "" }, "Select Customer"),
-                    customers.map(customer => (React.createElement("option", { key: customer.id, value: customer.id },
-                        customer.params.first_name,
-                        " ",
-                        customer.params.last_name))))),
-            React.createElement(FormGroup, null,
                 React.createElement(Label, null, "Channel"),
                 React.createElement(StatusSelect, { name: "channel_id", value: formData.channel_id, onChange: handleInputChange },
                     React.createElement("option", { value: "" }, "Select Channel"),
-                    channels.map(channel => (React.createElement("option", { key: channel.id, value: channel.id }, channel.params.name))))),
+                    channels.map(channel => (React.createElement("option", { key: channel.params.id, value: channel.params.id }, channel.params.name))))),
             React.createElement(FormGroup, null,
                 React.createElement(Label, null, "Currency"),
                 React.createElement(StatusSelect, { name: "currency_id", value: formData.currency_id, onChange: handleInputChange },

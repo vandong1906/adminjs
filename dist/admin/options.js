@@ -1,5 +1,5 @@
-import componentLoader from './component-loader.js';
 import { models } from '../db/models/association.js';
+import componentLoader from './component-loader.js';
 import { setupAttributeDataHandling } from './field-types/index.js';
 import { AttributeGroupHandler } from './handlers/attribute-group.handler.js';
 import { AttributeHandler } from './handlers/attribute.handler.js';
@@ -16,12 +16,11 @@ const importantModels = [
     'Channel',
     'Currency',
     'AttributeGroup',
-    'Attribute'
+    'Attribute',
+    'Brand'
 ];
 const resources = Object.values(models)
-    .filter(model => {
-    return importantModels.includes(model.name);
-})
+    .filter((model) => importantModels.includes(model.name))
     .map((model) => {
     if (model.name === 'Product') {
         return {
@@ -35,6 +34,7 @@ const resources = Object.values(models)
                             show: 'AttributeEditor',
                         },
                     },
+                    defaultValue: {},
                 },
                 actions: {
                     new: {
@@ -48,14 +48,12 @@ const resources = Object.values(models)
                     'product_type_id',
                     'status',
                     'brand_id',
-                    'attribute_data',
                 ],
                 showProperties: [
                     'id',
                     'product_type_id',
                     'status',
                     'brand_id',
-                    'attribute_data',
                     'createdAt',
                     'updatedAt',
                 ],
@@ -431,32 +429,40 @@ const resources = Object.values(models)
                 properties: {
                     name: {
                         type: 'mixed',
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         components: {
                             show: 'JsonViewer',
                             edit: 'JsonEditor',
-                        }
+                        },
                     },
                     handle: {
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         isRequired: true,
                     },
                     position: {
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         isRequired: true,
                     },
                     attributable_type: {
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         isRequired: true,
                         availableValues: [
                             { value: 'product', label: 'Product' },
-                            { value: 'collection', label: 'Collection' }
-                        ]
+                            { value: 'collection', label: 'Collection' },
+                        ],
                     },
                 },
                 actions: {
                     new: {
-                        handler: async (request, response, context) => {
+                        handler: async (request, _response, context) => {
                             const result = await AttributeGroupHandler.createAttributeGroup(request.payload);
                             if (result.success) {
                                 return {
@@ -471,8 +477,8 @@ const resources = Object.values(models)
                         },
                     },
                     edit: {
-                        handler: async (request, response, context) => {
-                            const result = await AttributeGroupHandler.updateAttributeGroup(context.record.id, request.payload);
+                        handler: async (request, _response, context) => {
+                            const result = await AttributeGroupHandler.updateAttributeGroup(context.record.id(), request.payload);
                             if (result.success) {
                                 return {
                                     record: context.record,
@@ -508,45 +514,58 @@ const resources = Object.values(models)
                 properties: {
                     name: {
                         type: 'mixed',
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         components: {
                             show: 'JsonViewer',
                             edit: 'JsonEditor',
-                        }
+                        },
                     },
                     description: {
                         type: 'mixed',
-                        isVisible: { list: false, filter: false, show: true, edit: true },
+                        isVisible: {
+                            list: false, filter: false, show: true, edit: true,
+                        },
                         components: {
                             show: 'JsonViewer',
                             edit: 'JsonEditor',
-                        }
+                        },
                     },
                     handle: {
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         isRequired: true,
                     },
                     attribute_type: {
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         isRequired: true,
                     },
                     type: {
-                        isVisible: { list: true, filter: true, show: true, edit: true },
+                        isVisible: {
+                            list: true, filter: true, show: true, edit: true,
+                        },
                         isRequired: true,
                     },
                     configuration: {
                         type: 'mixed',
-                        isVisible: { list: false, filter: false, show: true, edit: true },
+                        isVisible: {
+                            list: false, filter: false, show: true, edit: true,
+                        },
                         components: {
                             show: 'JsonViewer',
                             edit: 'JsonEditor',
-                        }
+                        },
                     },
                 },
                 actions: {
                     new: {
-                        component: 'AttributeForm',
-                        handler: async (request, response, context) => {
+                        actionType: 'resource',
+                        component: 'AttributeActions',
+                        handler: async (request, _response, context) => {
                             const result = await AttributeHandler.createAttribute(request.payload);
                             if (result.success) {
                                 return {
@@ -559,10 +578,12 @@ const resources = Object.values(models)
                             }
                             throw new Error(result.error);
                         },
-                    }, edit: {
-                        component: 'AttributeForm',
-                        handler: async (request, response, context) => {
-                            const result = await AttributeHandler.updateAttribute(context.record.id, request.payload);
+                    },
+                    edit: {
+                        actionType: 'record',
+                        component: 'AttributeActions',
+                        handler: async (request, _response, context) => {
+                            const result = await AttributeHandler.updateAttribute(context.record.id(), request.payload);
                             if (result.success) {
                                 return {
                                     record: result.data,
@@ -576,8 +597,8 @@ const resources = Object.values(models)
                         },
                     },
                     delete: {
-                        handler: async (request, response, context) => {
-                            const result = await AttributeHandler.deleteAttribute(context.record.id);
+                        handler: async (request, _response, context) => {
+                            const result = await AttributeHandler.deleteAttribute(context.record.id());
                             if (result.success) {
                                 return {
                                     record: context.record,
@@ -602,39 +623,16 @@ const resources = Object.values(models)
             },
         };
     }
-    return {
-        resource: model,
-        options: {
-            properties: {},
-        },
-    };
-});
+    if (model.name === 'Brand') {
+        return {
+            resource: model,
+        };
+    }
+    return null;
+})
+    .filter(Boolean);
 const options = {
-    rootPath: '/admin',
-    loginPath: '/admin/login',
-    logoutPath: '/admin/logout',
-    dashboard: {
-        component: 'Dashboard',
-    },
     resources,
-    branding: {
-        companyName: 'Lunar E-commerce',
-        logo: false,
-    },
-    locale: {
-        language: 'en',
-        translations: {
-            labels: {
-                navigation: 'Navigation',
-            },
-            resources: {},
-            messages: {
-                successfullyCreated: 'Successfully created a new record',
-                successfullyUpdated: 'Successfully updated a record',
-                successfullyDeleted: 'Successfully deleted a record',
-            },
-        },
-    },
     componentLoader,
 };
 export default options;

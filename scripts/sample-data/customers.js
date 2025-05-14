@@ -4,87 +4,63 @@ const createSampleCustomers = async () => {
   try {
     console.log('Creating sample customers...');
 
-    // Sample customer data
-    const sampleCustomers = [
+    const customers = [
       {
-        title: 'Mr',
+        id: 1,
         first_name: 'John',
-        last_name: 'Doe',
+        last_name : 'Doe',
         email: 'john.doe@example.com',
         phone: '+1234567890',
-        company_name: 'ABC Corp',
-        vat_no: '',
-        meta: {
-          notes: 'Regular customer',
-          preferences: {
-            shipping: 'express',
-            marketing: true
-          }
-        }
+        status: 'active',
+        defaultAddressId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        title: 'Mrs',
+        id: 2,
         first_name: 'Jane',
-        last_name: 'Smith',
-        email: 'jane.smith@example.com',
+        last_name : 'Smith',
+        email: 'jane.smith@example.com', 
         phone: '+1987654321',
-        company_name: '',
-        vat_no: '',
-        meta: {
-          notes: 'Premium customer',
-          preferences: {
-            shipping: 'standard',
-            marketing: false
-          }
-        }
+        status: 'active',
+        defaultAddressId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        title: 'Ms',
-        first_name: 'Emily',
-        last_name: 'Johnson',
-        email: 'emily.johnson@example.com',
+        id: 3,
+        first_name: 'Mike',
+        last_name : 'Johnson',
+        email: 'mike.johnson@example.com',
         phone: '+1122334455',
-        company_name: 'Johnson Ltd',
-        vat_no: 'GB123456789',
-        meta: {
-          notes: 'Business customer',
-          preferences: {
-            shipping: 'overnight',
-            marketing: true
-          }
-        }
+        status: 'active',
+        defaultAddressId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+
+    const customerGroups = [
+      {
+        id: 1,
+        name: 'VIP Customers',
+        description: 'High-value customers with special privileges',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        title: 'Mr',
-        first_name: 'Nguyen',
-        last_name: 'Van A',
-        email: 'nguyenvana@example.com',
-        phone: '+84123456789',
-        company_name: 'Công ty TNHH A',
-        vat_no: 'VN1234567890',
-        meta: {
-          notes: 'Vietnamese customer',
-          preferences: {
-            shipping: 'standard',
-            marketing: true
-          }
-        }
+        id: 2,
+        name: 'Regular Customers',
+        description: 'Standard customer group',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        title: 'Mrs',
-        first_name: 'Tran',
-        last_name: 'Thi B',
-        email: 'tranthib@example.com',
-        phone: '+84987654321',
-        company_name: '',
-        vat_no: '',
-        meta: {
-          notes: 'Regular Vietnamese customer',
-          preferences: {
-            shipping: 'express',
-            marketing: false
-          }
-        }
+        id: 3,
+        name: 'New Customers',
+        description: 'Recently registered customers',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ];
 
@@ -97,7 +73,7 @@ const createSampleCustomers = async () => {
 
     // Create customers
     const createdCustomers = await Promise.all(
-      sampleCustomers.map(customerData => models.Customer.create(customerData))
+      customers.map(customerData => models.Customer.create(customerData))
     );
 
     console.log(`Created ${createdCustomers.length} sample customers.`);
@@ -116,6 +92,8 @@ const createSampleCustomers = async () => {
         capital: 'Washington D.C.',
         currency: 'USD',
         native: 'United States',
+        emoji: '🇺🇸',
+        emoji_u: 'U+1F1FA U+1F1F8'
       });
       
       countries.push(defaultCountry);
@@ -127,8 +105,8 @@ const createSampleCustomers = async () => {
         customer_id: customer.id,
         country_id: countries[0].id,
         title: customer.title,
-        first_name: customer.first_name,
-        last_name: customer.last_name,
+        first_name: customer.firstName,
+        last_name: customer.lastName,
         company_name: customer.company_name,
         line_one: '123 Main Street',
         line_two: 'Apt 4B',
@@ -148,6 +126,11 @@ const createSampleCustomers = async () => {
     }
 
     console.log(`Created addresses for ${createdCustomers.length} customers.`);
+
+    return {
+      customers,
+      customerGroups
+    };
   } catch (error) {
     console.error('Error creating sample customers:', error);
     throw error;

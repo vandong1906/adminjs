@@ -64,17 +64,18 @@ const CartForm = (props) => {
         setLoading(true);
         
         // Fetch each resource individually with error handling
-        try {
-          const customersResponse = await api.resourceAction({ resourceId: 'lunar_customers', actionName: 'list' });
-          setCustomers(customersResponse.data.records || []);
-        } catch (error) {
-          console.warn('Error fetching customers:', error);
-          setCustomers([]);
-        }
+        // try {
+        //   const customersResponse = await api.resourceAction({ resourceId: 'Customer', actionName: 'list' });
+        //   setCustomers(customersResponse.data.records || []);
+        //   console.log('Customers:', customersResponse.data.records);
+        // } catch (error) {
+        //   console.warn('Error fetching customers:', error);
+        //   setCustomers([]);
+        // }
         
         try {
           const usersResponse = await api.resourceAction({ resourceId: 'users', actionName: 'list' });
-          setUsers(usersResponse.data.records || []);
+        setUsers(usersResponse.data.records || []);
         } catch (error) {
           console.warn('Error fetching users:', error);
           setUsers([]);
@@ -82,7 +83,7 @@ const CartForm = (props) => {
         
         try {
           const channelsResponse = await api.resourceAction({ resourceId: 'lunar_channels', actionName: 'list' });
-          setChannels(channelsResponse.data.records || []);
+        setChannels(channelsResponse.data.records || []);
         } catch (error) {
           console.warn('Error fetching channels:', error);
           setChannels([]);
@@ -90,7 +91,7 @@ const CartForm = (props) => {
         
         try {
           const currenciesResponse = await api.resourceAction({ resourceId: 'lunar_currencies', actionName: 'list' });
-          setCurrencies(currenciesResponse.data.records || []);
+        setCurrencies(currenciesResponse.data.records || []);
         } catch (error) {
           console.warn('Error fetching currencies:', error);
           setCurrencies([]);
@@ -181,7 +182,7 @@ const CartForm = (props) => {
       </Box>
     );
   }
-  
+  console.log('Form Data:', formData);
   return (
     <Box as="form" onSubmit={handleSubmit}>
       <H3 mb="xl">{isEditing ? 'Edit Cart' : 'Create New Cart'}</H3>
@@ -211,7 +212,7 @@ const CartForm = (props) => {
           </StatusSelect>
         </FormGroup>
         
-        <FormGroup>
+        {/* <FormGroup>
           <Label>Customer</Label>
           <StatusSelect
             name="customer_id"
@@ -220,12 +221,12 @@ const CartForm = (props) => {
           >
             <option value="">Select Customer</option>
             {customers.map(customer => (
-              <option key={customer.id} value={customer.id}>
+              <option key={customer.params.id} value={customer.params.id}>
                 {customer.params.first_name} {customer.params.last_name}
               </option>
             ))}
           </StatusSelect>
-        </FormGroup>
+        </FormGroup> */}
         
         <FormGroup>
           <Label>Channel</Label>
@@ -236,7 +237,7 @@ const CartForm = (props) => {
           >
             <option value="">Select Channel</option>
             {channels.map(channel => (
-              <option key={channel.id} value={channel.id}>
+              <option key={channel.params.id} value={channel.params.id}>
                 {channel.params.name}
               </option>
             ))}

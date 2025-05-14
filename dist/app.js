@@ -2,7 +2,7 @@ import express from 'express';
 import AdminJS from 'adminjs';
 import { buildAuthenticatedRouter } from '@adminjs/express';
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: '../.env' });
 import provider from './admin/auth-provider.js';
 import options from './admin/options.js';
 import initializeDb from './db/index.js';

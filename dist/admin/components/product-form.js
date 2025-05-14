@@ -80,7 +80,7 @@ const ProductForm = (props) => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const productTypesResponse = await api.resourceAction({ resourceId: 'ProductType', actionName: 'list' });
+                const productTypesResponse = await api.resourceAction({ resourceId: 'lunar_product_types', actionName: 'list' });
                 setProductTypes(productTypesResponse.data.records || []);
                 if (isEditing) {
                     try {
@@ -174,7 +174,7 @@ const ProductForm = (props) => {
                 React.createElement(Label, { required: true }, "Product Type"),
                 React.createElement(StatusSelect, { name: "product_type_id", value: formData.product_type_id, onChange: handleInputChange, required: true },
                     React.createElement("option", { value: "" }, "Select Product Type"),
-                    productTypes.map(type => (React.createElement("option", { key: type.id, value: type.id }, type.params.name))))),
+                    productTypes.map(type => (React.createElement("option", { key: type.params.id, value: type.params.id }, type.params.name))))),
             React.createElement(FormGroup, null,
                 React.createElement(Label, { required: true }, "Status"),
                 React.createElement(StatusSelect, { name: "status", value: formData.status, onChange: handleInputChange, required: true },

@@ -89,7 +89,7 @@ const ProductForm = (props) => {
         setLoading(true);
         
         // Only fetch product types which should definitely exist
-        const productTypesResponse = await api.resourceAction({ resourceId: 'ProductType', actionName: 'list' });
+        const productTypesResponse = await api.resourceAction({ resourceId: 'lunar_product_types', actionName: 'list' });
         setProductTypes(productTypesResponse.data.records || []);
         
         // If editing, load the product data
@@ -212,7 +212,7 @@ const ProductForm = (props) => {
           >
             <option value="">Select Product Type</option>
             {productTypes.map(type => (
-              <option key={type.id} value={type.id}>
+              <option key={type.params.id} value={type.params.id}>
                 {type.params.name}
               </option>
             ))}

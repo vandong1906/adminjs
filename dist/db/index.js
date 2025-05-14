@@ -7,14 +7,15 @@ AdminJS.registerAdapter({
 });
 const initialize = async () => {
     try {
-        sequelize.sync();
         await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
+        console.log('Database connection established successfully.');
+        await sequelize.sync({ alter: process.env.NODE_ENV !== 'production' });
+        console.log('Database models synchronized successfully.');
         return { sequelize };
     }
     catch (error) {
-        console.error('Unable to connect to the database:', error);
-        return {};
+        console.error('Database initialization failed:', error);
+        throw error;
     }
 };
 export default initialize;

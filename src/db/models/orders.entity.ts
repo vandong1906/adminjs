@@ -29,6 +29,7 @@ export type OrderCreationAttributes = Optional<IOrder, 'id'>;
 
 export class Order extends Model<IOrder, OrderCreationAttributes> {
   declare id: number;
+
   declare customer_id?: number;
   declare channel_id?: number;
   declare status: string;
@@ -63,7 +64,7 @@ Order.init(
     },
     channel_id: {
       type: DataTypes.BIGINT.UNSIGNED,
-      allowNull: true, 
+      allowNull: true,
     },
     status: {
       type: DataTypes.STRING(255),

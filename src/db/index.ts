@@ -1,6 +1,7 @@
 import { Database, Resource } from '@adminjs/sequelize';
 import AdminJS from 'adminjs';
-import {sequelize} from './models/association.js'
+
+import { sequelize } from './models/association.js';
 
 AdminJS.registerAdapter({
   Database,
@@ -9,15 +10,18 @@ AdminJS.registerAdapter({
 
 const initialize = async () => {
   try {
-    sequelize.sync();
+    // Wait for database sync to complete
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log('Database connection established successfully.');
+
+    // Sync all models
+    await sequelize.sync({ alter: process.env.NODE_ENV !== 'production' });
+    console.log('Database models synchronized successfully.');
 
     return { sequelize };
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
-
-    return {};
+    console.error('Database initialization failed:', error);
+    throw error; // Re-throw to prevent app from starting with broken DB connection
   }
 };
 

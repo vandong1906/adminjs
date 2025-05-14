@@ -32,59 +32,52 @@ const createSampleProducts = async () => {
     // Sample product data
     const sampleProducts = [
       {
-        product_type_id: getProductType('Clothing').id,
-        status: 'published',
-        brand_id: brand.id,
-        attribute_data: {
-          name: 'Basic T-Shirt',
-          description: 'A comfortable cotton t-shirt available in various colors and sizes.',
-          price: 19.99,
-          slug: 'basic-t-shirt',
-        }
+        id: 1,
+        name: 'Premium Cotton T-Shirt',
+        slug: 'premium-cotton-tshirt',
+        description: 'High quality cotton t-shirt with modern fit',
+        status: 'active',
+        price: 29.99,
+        compareAtPrice: 39.99,
+        sku: 'TS-001',
+        barcode: '123456789',
+        inventoryQuantity: 100,
+        weight: 0.2,
+        weightUnit: 'kg',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        product_type_id: getProductType('Electronics').id,
-        status: 'published',
-        brand_id: brand.id,
-        attribute_data: {
-          name: 'Smartphone Pro',
-          description: 'The latest smartphone with advanced features and exceptional performance.',
-          price: 999.99,
-          slug: 'smartphone-pro',
-        }
+        id: 2, 
+        name: 'Classic Denim Jeans',
+        slug: 'classic-denim-jeans',
+        description: 'Classic fit denim jeans with premium quality',
+        status: 'active',
+        price: 79.99,
+        compareAtPrice: 99.99,
+        sku: 'DJ-001',
+        barcode: '987654321',
+        inventoryQuantity: 50,
+        weight: 0.5,
+        weightUnit: 'kg',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        product_type_id: getProductType('Food & Beverages').id,
-        status: 'published',
-        brand_id: brand.id,
-        attribute_data: {
-          name: 'Premium Coffee Beans',
-          description: 'High-quality coffee beans sourced from the finest regions.',
-          price: 14.99,
-          slug: 'premium-coffee-beans',
-        }
-      },
-      {
-        product_type_id: getProductType('Clothing').id,
-        status: 'published',
-        brand_id: brand.id,
-        attribute_data: {
-          name: 'Denim Jeans',
-          description: 'Classic denim jeans with a comfortable fit and durable material.',
-          price: 49.99,
-          slug: 'denim-jeans',
-        }
-      },
-      {
-        product_type_id: getProductType('Electronics').id,
-        status: 'draft',
-        brand_id: brand.id,
-        attribute_data: {
-          name: 'Wireless Headphones',
-          description: 'High-quality wireless headphones with noise cancellation.',
-          price: 149.99,
-          slug: 'wireless-headphones',
-        }
+        id: 3,
+        name: 'Leather Wallet',
+        slug: 'leather-wallet',
+        description: 'Genuine leather wallet with multiple card slots',
+        status: 'active', 
+        price: 49.99,
+        compareAtPrice: 69.99,
+        sku: 'LW-001',
+        barcode: '456789123',
+        inventoryQuantity: 75,
+        weight: 0.1,
+        weightUnit: 'kg',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ];
 
